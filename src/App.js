@@ -6,8 +6,9 @@ import ProductListing from './components/ProductListing';
 import CartPage from './components/CartPage';
 
 function App() {
+  // if you deploy under /PLANT-SHOP use basename, else remove basename prop
   return (
-    <Router>
+    <Router basename="/PLANT-SHOP">
       <Header />
       <Routes>
         <Route path="/" element={<LandingPage />} />

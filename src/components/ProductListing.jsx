@@ -1,30 +1,24 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { addToCart } from '../redux/cartSlice';
+import { useSelector } from 'react-redux';
+import PlantCard from './PlantCard';
 
-const ProductListing = () => {
-  const plants = useSelector(state => state.plants);
-  const dispatch = useDispatch();
-
-  const handleAddToCart = (plant) => {
-    dispatch(addToCart(plant));
-  };
+export default function ProductListing() {
+  const plants = useSelector(state => state.plants || []);
+  const categories = Array.from(new Set(plants.map(p => p.category)));
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Our Plants</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
-        {plants.map((plant) => (
-          <div key={plant.id} style={{ border: '1px solid #ccc', padding: '10px', width: '200px' }}>
-            <img src={plant.image} alt={plant.name} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
-            <h3>{plant.name}</h3>
-            <p>${plant.price}</p>
-            <button onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+    <div className="container">
+      <h2>Product Listing</h2>
+      {categories.map(cat => (
+        <div key={cat} className="category">
+          <h3>{cat}</h3>
+          <div className="plant-grid">
+            {plants.filter(p => p.category === cat).map(plant => (
+              <PlantCard key={plant.id} plant={plant} />
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
-};
-
-export default ProductListing;
+}
